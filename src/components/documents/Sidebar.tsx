@@ -16,6 +16,7 @@ interface SidebarProps {
   onDeleteSelected: () => void;
   onUpload: (files: File[]) => void;
   isLoading: boolean;
+  isUploading: boolean;
   onRefresh: () => void;
   onDeleteDoc: (id: string) => void;
   onSetActive: (id: string) => void;
@@ -30,6 +31,7 @@ export function Sidebar({
   onDeleteSelected,
   onUpload,
   isLoading,
+  isUploading,
   onRefresh,
   onDeleteDoc,
   onSetActive,
@@ -76,15 +78,25 @@ export function Sidebar({
           onClick={() => fileInputRef.current?.click()}
           className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-muted/50 transition-colors cursor-pointer group"
         >
-          <Upload className="w-8 h-8 text-muted-foreground mb-2 group-hover:text-primary transition-colors" />
-          <p className="text-sm font-medium">Click to upload</p>
-          <p className="text-xs text-muted-foreground mt-1">PDF, DOCX, TXT</p>
+          {isUploading ? (
+            <>
+              <RefreshCw className="w-8 h-8 text-primary mb-2 animate-spin" />
+              <p className="text-sm font-medium">Uploading...</p>
+            </>
+          ) : (
+            <>
+              <Upload className="w-8 h-8 text-muted-foreground mb-2 group-hover:text-primary transition-colors" />
+              <p className="text-sm font-medium">Click to upload</p>
+              <p className="text-xs text-muted-foreground mt-1">PDF, DOCX, TXT</p>
+            </>
+          )}
           <input 
             type="file" 
             ref={fileInputRef} 
             onChange={handleFileChange} 
             className="hidden" 
             multiple 
+            disabled={isUploading}
             accept=".pdf,.docx,.txt"
           />
         </div>

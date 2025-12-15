@@ -5,6 +5,7 @@ import type { Document } from '../types';
 export const useDocuments = () => {
     const [documents, setDocuments] = useState<Document[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const fetchDocuments = useCallback(async (silent = false) => {
@@ -22,13 +23,15 @@ export const useDocuments = () => {
     }, []);
 
     const uploadFiles = async (files: File[]) => {
-        // setIsLoading(true); // Don't block UI on upload, maybe just show progress
+        setIsUploading(true);
         try {
             await api.uploadFiles(files);
             await fetchDocuments(true);
         } catch (err) {
             console.error(err);
             throw err;
+        } finally {
+            setIsUploading(false);
         }
     };
 
@@ -73,6 +76,7 @@ export const useDocuments = () => {
     return {
         documents,
         isLoading,
+        isUploading,
         error,
         fetchDocuments,
         uploadFiles,

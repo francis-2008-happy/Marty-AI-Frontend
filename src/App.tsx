@@ -12,6 +12,7 @@ function AppContent() {
   const { 
     documents, 
     isLoading: isDocsLoading, 
+    isUploading,
     fetchDocuments, 
     uploadFiles, 
     deleteDocument,
@@ -118,6 +119,7 @@ function AppContent() {
           onDeleteSelected={handleDeleteSelected}
           onUpload={uploadFiles}
           isLoading={isDocsLoading}
+          isUploading={isUploading}
           onRefresh={() => fetchDocuments()}
           onDeleteDoc={handleDeleteDoc}
           onSetActive={handleSetActive}
